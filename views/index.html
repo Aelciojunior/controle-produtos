@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta charset="UTF-8">
+    <title>Controle de Vendas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Controle de Vendas</h1>
+
+    <div id="produtos-container"></div>
+
+    <hr />
+
+    <div id="historico-container"></div>
+
+    <div id="relatorio-container"></div>
+
+    <hr />
+    <div id="relatorio"></div>
+
+
+    <div style="text-align: center; margin-top: 40px;">
+        <button onclick="imprimirHistorico()">📄 Exportar Histórico de Vendas</button>
+        <button onclick="imprimirRelatorio()">📄 Exportar Relatório Financeiro</button>
+      </div>
+
+      <a href="/logout" id="btn-sair">Sair</a>
+
+
+    <script src="produtos.js"></script>
+
+</body>
+</html>

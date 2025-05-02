@@ -1,0 +1,86 @@
+[
+  {
+    "nome": "Licor de Tamarindo Verde",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 46,
+    "vendidos": 16
+  },
+  {
+    "nome": "Licor de Caja",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 28,
+    "vendidos": 2
+  },
+  {
+    "nome": "Licor de Jenipapo",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 18,
+    "vendidos": 3
+  },
+  {
+    "nome": "Licor de Tamarindo",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 40,
+    "vendidos": 0
+  },
+  {
+    "nome": "Licor de Maracujá",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 35,
+    "vendidos": 0
+  },
+  {
+    "nome": "Licor de Passas",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 25,
+    "vendidos": 0
+  },
+  {
+    "nome": "Licor de Chocolate",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 30,
+    "vendidos": 0
+  },
+  {
+    "nome": "Licor de Graviola",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 29,
+    "vendidos": 1
+  },
+  {
+    "nome": "Licor de Morango",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 30,
+    "vendidos": 0
+  },
+  {
+    "nome": "Licor de Café",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 28,
+    "vendidos": 2
+  },
+  {
+    "nome": "Licor de Canela",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 9,
+    "vendidos": 1
+  },
+  {
+    "nome": "Licor de Manga",
+    "preco": 15,
+    "custo": 12,
+    "estoque": 0,
+    "vendidos": 1
+  }
+]
