@@ -9,9 +9,34 @@
     <title>Controle de Vendas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <style>
+        #carrinho-container {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        #carrinho-container h3 {
+            margin-top: 0;
+        }
+        #carrinho-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #carrinho-container li {
+            margin-bottom: 5px;
+        }
+        #carrinho-container li button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>Controle de Vendas</h1>
+
+    <div id="carrinho-container">
+        </div>
 
     <div id="produtos-container"></div>
 
@@ -28,9 +53,9 @@
     <div style="text-align: center; margin-top: 40px;">
         <button onclick="imprimirHistorico()">📄 Exportar Histórico de Vendas</button>
         <button onclick="imprimirRelatorio()">📄 Exportar Relatório Financeiro</button>
-      </div>
+    </div>
 
-      <a href="/logout" id="btn-sair">Sair</a>
+    <a href="/logout" id="btn-sair">Sair</a>
 
 
     <script src="produtos.js"></script>

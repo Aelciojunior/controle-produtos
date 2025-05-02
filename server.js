@@ -3,9 +3,56 @@ const fs = require("fs");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const moment = require('moment-timezone'); // Importando o moment-timezone
 
 const app = express();
 const port = 3000;
+
+const nomesLicores = [
+    "Licor de Tamarindo Verde",
+    "Licor de Caja",
+    "Licor de Jenipapo",
+    "Licor de Tamarindo",
+    "Licor de Maracujá",
+    "Licor de Passas",
+    "Licor de Chocolate",
+    "Licor de Graviola",
+    "Licor de Morango",
+    "Licor de Café",
+    "Licor de Canela",
+    "Licor de Manga"
+];
+
+// Função para atualizar os preços dos licores no produtos.json
+function atualizarPrecosLicores() {
+    fs.readFile("produtos.json", "utf8", (err, data) => {
+        if (err) {
+            console.error("Erro ao ler produtos.json:", err);
+            return;
+        }
+        try {
+            const produtos = JSON.parse(data);
+            const produtosAtualizados = produtos.map(produto => {
+                if (nomesLicores.includes(produto.nome)) {
+                    return { ...produto, preco: 20 };
+                }
+                return produto;
+            });
+            fs.writeFile("produtos.json", JSON.stringify(produtosAtualizados, null, 2), err => {
+                if (err) {
+                    console.error("Erro ao escrever em produtos.json:", err);
+                } else {
+                    console.log("Preços dos licores atualizados para 20 no produtos.json");
+                }
+            });
+        } catch (error) {
+            console.error("Erro ao parsear produtos.json:", error);
+        }
+    });
+}
+
+// Executar a atualização dos preços ao iniciar o servidor
+atualizarPrecosLicores();
 
 // Configurar sessões com tempo de vida para o cookie
 app.use(session({
@@ -66,7 +113,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 // ================= API ===================
 
 app.get("/produtos", autenticar, (req, res) => {
@@ -81,30 +127,65 @@ app.get("/produtos", autenticar, (req, res) => {
 });
 
 app.post("/venda", autenticar, (req, res) => {
-    const { nome, quantidade } = req.body;
+    const itensVenda = req.body; // Agora esperamos um array de itens
+
+    if (!Array.isArray(itensVenda) || itensVenda.length === 0) {
+        return res.status(400).json({ erro: "Nenhum item na venda." });
+    }
+
     fs.readFile("produtos.json", "utf8", (err, data) => {
         if (err) return res.status(500).json({ erro: "Erro ao ler produtos" });
 
         let produtos = JSON.parse(data);
-        const produto = produtos.find(p => p.nome === nome);
+        let totalVenda = 0;
+        let vendasRegistradas = [];
+        let licoresVendidos = 0;
 
-        if (!produto || produto.estoque < quantidade) {
-            return res.status(400).json({ erro: "Estoque insuficiente ou produto não encontrado" });
+        // Primeiro, vamos verificar o estoque de todos os itens ANTES de qualquer modificação
+        for (const item of itensVenda) {
+            const produto = produtos.find(p => p.nome === item.nome);
+            if (!produto || produto.estoque < item.quantidade) {
+                return res.status(400).json({ erro: `Estoque insuficiente para ${item.nome}` });
+            }
         }
 
-        produto.estoque -= quantidade;
-        produto.vendidos += quantidade;
-        const totalVenda = produto.preco * quantidade;
+        // Agora que sabemos que há estoque suficiente para todos os itens, podemos processar a venda
+        for (const item of itensVenda) {
+            const produto = produtos.find(p => p.nome === item.nome);
+            produto.estoque -= item.quantidade;
+            produto.vendidos += item.quantidade;
+
+            let precoUnitario = produto.preco;
+            if (nomesLicores.includes(item.nome)) {
+                precoUnitario = 20;
+                licoresVendidos += item.quantidade;
+            }
+            totalVenda += precoUnitario * item.quantidade;
+
+            vendasRegistradas.push({
+                nome: item.nome,
+                quantidade: item.quantidade,
+                preco: precoUnitario
+            });
+        }
+
+        // Aplicar o desconto de "3 por 50" nos licores
+        if (licoresVendidos >= 3) {
+            const numDescontos = Math.floor(licoresVendidos / 3);
+            totalVenda -= numDescontos * (20 * 3 - 50); // Reduz o total para cada grupo de 3 licores
+        }
 
         fs.writeFile("produtos.json", JSON.stringify(produtos, null, 2), err => {
             if (err) return res.status(500).json({ erro: "Erro ao atualizar estoque" });
 
-            const novaVenda = {
-                nome,
-                quantidade,
-                preco: produto.preco,
+            const vendaFinal = {
+                itens: vendasRegistradas.map(item => ({
+                    nome: item.nome,
+                    quantidade: item.quantidade,
+                    preco: item.preco
+                })),
                 total: totalVenda,
-                data: new Date().toLocaleString()
+                data: moment().tz("America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss')
             };
 
             fs.readFile("vendas.json", "utf8", (err, data) => {
@@ -115,11 +196,11 @@ app.post("/venda", autenticar, (req, res) => {
                     } catch {}
                 }
 
-                vendas.push(novaVenda);
+                vendas.push(vendaFinal);
 
                 fs.writeFile("vendas.json", JSON.stringify(vendas, null, 2), err => {
                     if (err) return res.status(500).json({ erro: "Erro ao salvar venda" });
-                    res.json({ sucesso: "Venda registrada com sucesso!" });
+                    res.json({ sucesso: "Venda registrada com sucesso!", total: totalVenda });
                 });
             });
         });
