@@ -1,4 +1,3 @@
-// produtos.js
 document.addEventListener("DOMContentLoaded", () => {
     carregarProdutos();
     carregarHistorico();
@@ -65,6 +64,13 @@ function atualizarCarrinhoNaTela() {
                 const removerButton = document.createElement('button');
                 removerButton.textContent = 'Remover';
                 removerButton.onclick = () => removerDoCarrinho(index);
+                removerButton.style.backgroundColor = '#f44336'; // Vermelho para Remover
+                removerButton.style.color = 'white';
+                removerButton.style.border = 'none';
+                removerButton.style.padding = '8px 12px';
+                removerButton.style.borderRadius = '5px';
+                removerButton.style.cursor = 'pointer';
+                removerButton.style.marginLeft = '5px';
                 listItem.appendChild(removerButton);
                 listaCarrinho.appendChild(listItem);
             });
@@ -72,6 +78,14 @@ function atualizarCarrinhoNaTela() {
             const finalizarButton = document.createElement('button');
             finalizarButton.textContent = 'Finalizar Venda';
             finalizarButton.onclick = finalizarVenda;
+            finalizarButton.style.backgroundColor = '#4CAF50'; // Azul para Finalizar Venda
+            finalizarButton.style.color = 'white';
+            finalizarButton.style.border = 'none';
+            finalizarButton.style.padding = '10px 15px';
+            finalizarButton.style.fontSize = '1.1em';
+            finalizarButton.style.borderRadius = '5px';
+            finalizarButton.style.cursor = 'pointer';
+            finalizarButton.style.marginTop = '10px';
             carrinhoContainer.appendChild(finalizarButton);
         } else {
             carrinhoContainer.innerHTML += "<p>Carrinho vazio.</p>";
@@ -93,9 +107,9 @@ function carregarProdutos() {
                     Estoque: ${p.estoque}<br/>
                     Vendidos: ${p.vendidos}<br/>
                     Quantidade: <input type="number" placeholder="Qtd" min="0" id="venda-${p.nome}" value="0"><br/>
-                    <button onclick="adicionarAoCarrinho('${p.nome}')">Adicionar ao Carrinho</button><br/>
+                    <button style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; text-align: center; text-decoration: none; display: inline-block; font-size: 1em; cursor: pointer; border-radius: 5px; margin-right: 5px;" onclick="adicionarAoCarrinho('${p.nome}')">Adicionar ao Carrinho</button><br/>
                     <input type="number" placeholder="Qtd" min="1" id="add-${p.nome}">
-                    <button onclick="adicionarEstoque('${p.nome}')">Adicionar Estoque</button>
+                    <button style="background-color: #2196F3; color: white; border: none; padding: 8px 12px; text-align: center; text-decoration: none; display: inline-block; font-size: 1em; cursor: pointer; border-radius: 5px;" onclick="adicionarEstoque('${p.nome}')">Adicionar Estoque</button>
                     <hr/>
                 `;
                 container.appendChild(div);
@@ -164,6 +178,7 @@ function carregarRelatorioFinanceiro() {
             <tr>
                 <th>Item de Gasto</th>
                 <th>Valor (R$)</th>
+                <th>Ações</th>
             </tr>
         `;
 
@@ -184,7 +199,8 @@ function carregarRelatorioFinanceiro() {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
                     <td>${nomeExibicao}</td>
-                    <td>${gastos[chave] ? gastos[chave].toFixed(2) : '0.00'}</td>
+                    <td id="valor-${chave}">${gastos[chave] ? gastos[chave].toFixed(2) : '0.00'}</td>
+                    <td><button style="background-color: #f44336; color: white; border: none; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 0.9em; cursor: pointer; border-radius: 3px; margin-left: 5px;" onclick="editarGasto('${chave}')">Editar</button></td>
                 `;
                 tabelaGastos.appendChild(linha);
             }
@@ -261,6 +277,8 @@ function imprimirHistorico() {
 }
 
 function imprimirRelatorio() {
+    console.log("Função imprimirRelatorio() chamada!"); // ADICIONADO PARA DIAGNÓSTICO
+
     fetch("/gastos")
         .then(res => res.json())
         .then(gastos => {
@@ -337,4 +355,13 @@ function adicionarDataHoraManual(container) {
     stamp.style.marginTop = '20px';
     stamp.textContent = 'Exportado em: ' + dataHora;
     container.appendChild(stamp);
+}
+
+// FUNÇÃO DE TESTE SIMPLIFICADA
+function imprimirRelatorioTeste() {
+    console.log("Função imprimirRelatorioTeste() chamada!"); // PARA DIAGNÓSTICO
+    const win = window.open('', '', 'height=300,width=500');
+    win.document.write('<html><head><title>Teste de Impressão</title></head><body><h1>Funcionou no Mobile?</h1></body></html>');
+    win.document.close();
+    win.print();
 }

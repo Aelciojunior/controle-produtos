@@ -9,7 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
-    color: #333;
+    color: #333333;
     padding: 20px;
 }
 
@@ -21,13 +21,71 @@ h1 {
     color: #5a5a5a;
 }
 
+
+
+#carrinho-container button {
+    padding: 10px 15px; /* Aumenta o preenchimento para aumentar a caixa */
+    font-size: 1em; /* Aumenta o tamanho da fonte */
+    border-radius: 1px; /* Mantém as bordas arredondadas */
+    cursor: pointer;
+    margin: 5px;
+    border: none;
+    color: white;
+  }
+  
+ 
+
 /* Container de produtos */
 #produtos-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    /* Ajuste o número de colunas conforme preferir para telas maiores */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    justify-content: space-around;
-}
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  #produtos-container h2 {
+    text-align: center; /* Centraliza o título "Produtos" */
+    grid-column: 1 / -1; /* Faz o título ocupar toda a largura da grade */
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 2em;
+  }
+  
+  #produtos-container > div {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+    display: flex; /* Para alinhar os elementos internos */
+    flex-direction: column; /* Organiza os elementos internos verticalmente */
+    align-items: center; /* Centraliza os itens horizontalmente dentro de cada licor */
+    text-align: center; /* Centraliza o texto dentro de cada licor */
+  }
+  
+  #produtos-container > div strong {
+    margin-bottom: 5px;
+    font-size: 1.5em;
+  }
+  
+  #produtos-container > div p {
+    margin: 5px 0;
+    font-size: 1.1em;
+  }
+  
+  #produtos-container > div input[type="number"] {
+    width: 90px; /* Aumenta a largura da caixa de quantidade */
+    font-size: 1.2em; /* Aumenta o tamanho da fonte do número na quantidade */
+    padding: 6px; /* Adiciona um pouco de preenchimento interno */
+    margin: 8px 0;
+  }
+  
+  #produtos-container > div button {
+    margin: 5px;
+  }
 
 /* Estilo dos cards de produtos */
 .produto {
@@ -39,6 +97,7 @@ h1 {
     text-align: center;
     transition: transform 0.2s ease;
 }
+
 
 .produto:hover {
     transform: scale(1.05);
@@ -290,18 +349,53 @@ ul {
     }
 }
 
-/* Responsividade para dispositivos menores */
+
+
 @media (max-width: 768px) {
-    .produto {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    #historico-container {
-        width: 95%;
-    }
-
-    #relatorio-financeiro {
-        width: 90%;
+    #btn-sair { 
+        font-size: 1em; 
+        padding: 8px 8px;
+        min-width: 20px;
+        min-height: 20px;
+        right: 5px;
+        top: 10px;
     }
 }
+
+/* Media query para telas ainda menores (até 480px) */
+@media (max-width: 480px) {
+    #produtos-container {
+      grid-template-columns: 1fr; /* Uma coluna em telas bem pequenas */
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+  
+    #produtos-container h2 {
+      font-size: 1.6em;
+      margin-bottom: 15px;
+    }
+  
+    #produtos-container > div {
+      text-align: left; /* Alinha o texto à esquerda em telas muito pequenas para melhor leitura */
+      align-items: flex-start; /* Alinha os itens à esquerda */
+    }
+  
+    #produtos-container > div input[type="number"] {
+      width: 50px;
+    }
+  
+    #produtos-container > div button {
+      font-size: 0.8em;
+      padding: 4px 6px;
+      margin: 2px;
+    }
+
+    #btn-sair {
+        font-size: 0.9em;
+        padding: 6px 10px;
+        min-width: 70px;
+        min-height: 25px;
+    }
+  }
+
+

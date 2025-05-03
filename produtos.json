@@ -3,8 +3,8 @@
     "nome": "Licor de Tamarindo Verde",
     "preco": 20,
     "custo": 12,
-    "estoque": 0,
-    "vendidos": 48
+    "estoque": 48,
+    "vendidos": 0
   },
   {
     "nome": "Licor de Caja",
