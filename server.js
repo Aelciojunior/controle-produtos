@@ -68,6 +68,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Rota para lidar com o login (POST)
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+
+    // Simulação de verificação de usuário (use seus dados reais ou um sistema de autenticação)
+    if (username === "Nair Barbosa" && password === "10061996") {
+        req.session.autenticado = true;
+        res.redirect("/index.html");
+    } else {
+        res.redirect("/login.html?erro=1");
+    }
+});
+
 function autenticar(req, res, next) {
     if (req.session && req.session.autenticado) {
         next();
