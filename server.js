@@ -1,9 +1,10 @@
+const pool = require("./db");  // Para conectar ao PostgreSQL
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const moment = require('moment-timezone'); // Importando o moment-timezone
+const moment = require('moment-timezone'); 
 
 const app = express();
 const port = 3000;
@@ -23,7 +24,7 @@ const nomesLicores = [
     "Licor de Manga"
 ];
 
-// Função para atualizar os preços dos licores no produtos.json
+// Função para atualizar os preços dos licores
 function atualizarPrecosLicores() {
     fs.readFile("produtos.json", "utf8", (err, data) => {
         if (err) {
@@ -115,6 +116,7 @@ app.use((req, res, next) => {
 
 // ================= API ===================
 
+// Endpoint para obter produtos
 app.get("/produtos", autenticar, (req, res) => {
     fs.readFile("produtos.json", "utf8", (err, data) => {
         if (err) return res.status(500).json({ erro: "Erro ao ler produtos" });
@@ -126,6 +128,7 @@ app.get("/produtos", autenticar, (req, res) => {
     });
 });
 
+// Endpoint para registrar uma venda
 app.post("/venda", autenticar, (req, res) => {
     const itensVenda = req.body; // Agora esperamos um array de itens
 
@@ -207,6 +210,7 @@ app.post("/venda", autenticar, (req, res) => {
     });
 });
 
+// Endpoint para adicionar estoque
 app.post("/adicionar", autenticar, (req, res) => {
     const { nome, quantidade } = req.body;
     fs.readFile("produtos.json", "utf8", (err, data) => {
@@ -226,6 +230,7 @@ app.post("/adicionar", autenticar, (req, res) => {
     });
 });
 
+// Endpoint para visualizar vendas
 app.get("/vendas", autenticar, (req, res) => {
     fs.readFile("vendas.json", "utf8", (err, data) => {
         if (err) return res.status(500).json({ erro: "Erro ao ler vendas" });
@@ -237,8 +242,8 @@ app.get("/vendas", autenticar, (req, res) => {
     });
 });
 
+// Endpoint para gastos
 const gastosPath = "gastos.json";
-
 app.get("/gastos", autenticar, (req, res) => {
     fs.readFile(gastosPath, "utf8", (err, data) => {
         let gastos = {};
@@ -253,6 +258,7 @@ app.get("/gastos", autenticar, (req, res) => {
     });
 });
 
+// Endpoint para adicionar gastos
 app.post("/gastos", autenticar, (req, res) => {
     const { item, valor } = req.body;
     fs.readFile(gastosPath, "utf8", (err, data) => {
